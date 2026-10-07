@@ -60,7 +60,7 @@ textarea{min-height:130px;resize:vertical}
 .err{color:var(--err);font-weight:600;margin-top:12px;min-height:1.2em}
 .done{text-align:center}
 .done .check{width:72px;height:72px;border-radius:50%;background:var(--ok);color:#fff;font-size:2.4rem;
-  display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px}.done .btn{text-decoration:none;display:inline-block;line-height:56px;padding:0 34px;margin-top:10px}.done .note{font-size:.85rem;opacity:.72;max-width:36em;margin:16px auto 0}
 .hide{display:none}
 .logo-wrap{display:flex;justify-content:center;margin:4px 0 14px}
 .logo-wrap img{width:260px;max-width:80%;height:auto}
@@ -120,7 +120,10 @@ const T = {
   needServer:"Este formulario debe abrirse desde una página web (http/https) para poder enviarse. No se envió nada.",
   fail:"No se pudo enviar. Revisa tu conexión e inténtalo de nuevo. Tus respuestas no se perdieron.",
   capFail:"No pudimos confirmar el envío. Tus respuestas siguen aquí. Inténtalo de nuevo.",
-  doneT:"¡Gracias! Recibimos tu información.", doneP:"Un miembro del equipo revisará tus respuestas y se comunicará contigo."
+  doneT:"Gracias. Recibimos tu información.",
+  doneP:"Tu solicitud fue enviada correctamente y será revisada por nuestro equipo.\n\nUn especialista de Zmart Consumer Rights puede comunicarse contigo por teléfono o email para revisar los próximos pasos.\n\nNo necesitas completar el formulario nuevamente.",
+  doneBtn:"Volver a Zmart Consumer Rights",
+  doneNote:"La información enviada se utiliza únicamente para evaluar tu solicitud y comunicarnos contigo."
  },
  en:{
   brand:"Solar panel review", lang:"Español", back:"Back", next:"Continue", start:"Start", send:"Send",
@@ -154,7 +157,10 @@ const T = {
   needServer:"This form must be opened from a web page (http/https) to be sent. Nothing was sent.",
   fail:"We couldn't send it. Check your connection and try again. Your answers were not lost.",
   capFail:"We couldn't confirm your submission. Your answers are still here. Please try again.",
-  doneT:"Thank you! We received your information.", doneP:"A team member will review your answers and contact you."
+  doneT:"Thank you. We received your information.",
+  doneP:"Your request was submitted successfully and will be reviewed by our team.\n\nA Zmart Consumer Rights specialist may contact you by phone or email to review the next steps.\n\nYou don't need to complete the form again.",
+  doneBtn:"Back to Zmart Consumer Rights",
+  doneNote:"The information you submitted will only be used to evaluate your request and contact you."
  }
 };
 
@@ -236,7 +242,11 @@ function render(focus=true){
       <input class="hp" type="text" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="consent"><input type="checkbox" id="consent" ${A.consent?"checked":""}><span>${t("consent")}</span></label>
       <p class="notice">${t("notice")}</p>`; break;
-   case "done": h=`<div class="done"><div class="check" aria-hidden="true">✓</div><h1>${t("doneT")}</h1><p>${t("doneP")}</p></div>`; break;
+   case "done": {
+      const paras=t("doneP").split("\n\n").map(p=>`<p>${p}</p>`).join("");
+      h=`<div class="done"><div class="check" aria-hidden="true">✓</div><h1>${t("doneT")}</h1>${paras}<p><a class="btn pri" href="https://zmartconsumer.com">${t("doneBtn")}</a></p><p class="note">${t("doneNote")}</p></div>`;
+      break;
+    }
   }
   $("card").innerHTML=h;
   bind("q1other","q1other"); bind("q4b","q4b"); bind("q5","q5");
