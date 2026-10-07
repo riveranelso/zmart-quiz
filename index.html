@@ -353,12 +353,12 @@ async function submit(){
     return false;
   }
 
-  const f=document.createElement("form");
-  f.method="POST"; f.action="https://formsubmit.co/"+encodeURIComponent(target); f.acceptCharset="UTF-8";
-  const add=(n,v)=>{ const i=document.createElement("input"); i.type="hidden"; i.name=n; i.value=v; f.appendChild(i); };
-  frozen.forEach(([k,v])=>add(k,v));
-  document.body.appendChild(f);
-  f.submit();
+  // v1.1: owned thank-you. El lead ya quedo guardado (captureToFly === true).
+  // Sin FormSubmit, sin navegacion externa: la notificacion la hace el
+  // worker owned async (zmart_notify) post-save.
+  sending=false;
+  step=steps().length-1; // pantalla "done" existente
+  render(false);
   return false;
 }
 
